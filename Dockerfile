@@ -3,8 +3,6 @@ FROM node:12-alpine as build-stage
 WORKDIR /app
 
 COPY package*.json ./
-COPY binding.node /usr/src/app/node-sass/
-ENV SASS_BINARY_PATH /usr/src/app/node-sass/binding.node
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories && \
     ## apk add python2 make g++ && \
     npm --registry=https://registry.npm.taobao.org install
