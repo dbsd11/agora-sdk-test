@@ -44,7 +44,6 @@ export default {
         rtc.client.subscribe(stream);
       });
       rtc.on("stream-subscribed", (evt) => {
-        if (this.streams.length == 1) return; //1V1视频
         let { stream } = evt;
         if (!this.streams.find((it) => it.getId() === stream.getId())) {
           this.streams.push(stream);
