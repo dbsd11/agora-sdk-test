@@ -114,6 +114,7 @@ export default {
           this.rtc.localStream.close();
           this.rtc.localStream = null
           this.localStream = null
+          this.streams = []
         } catch (e) {}
       }
     },
