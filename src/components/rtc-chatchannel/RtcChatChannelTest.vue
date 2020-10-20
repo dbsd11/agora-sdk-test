@@ -106,16 +106,15 @@ export default {
           this.rtc
             .leaveChannel()
             .then(() => {
-              that.$message({
-                message: "Leave Success",
-                type: "success",
-              });
+              console.info('Leave Success')
             })
             .catch((err) => {
               // this.$message.error("Leave Failure");
               log("leave error", err);
             });
           this.rtc.localStream.close();
+          this.rtc.localStream = null
+          this.localStream = null
         } catch (e) {}
       }
     },
