@@ -33,8 +33,8 @@ export default {
     };
   },
   created() {
-    if (!AgoraRTC.checkSystemRequirements()) {
-      alert.error("不兼容当前浏览器");
+    if (AgoraRTC.checkSystemRequirements()) {
+      alert("不兼容当前浏览器");
     }
   },
   methods: {
@@ -48,10 +48,10 @@ export default {
             return item.kind == "audioinput";
           });
           if (!audioinput) {
-            alert.error("未检测到麦克风！");
+            alert("未检测到麦克风！");
           }
           if (!videoinput) {
-            alert.error("未检测到摄像头！");
+            alert("未检测到摄像头！");
           }
         },
         function (errStr) {
