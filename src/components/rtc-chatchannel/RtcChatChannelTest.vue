@@ -32,8 +32,33 @@ export default {
       streams: [],
     };
   },
+  created() {
+    if (!AgoraRTC.checkSystemRequirements()) {
+      alert.error("不兼容当前浏览器");
+    }
+  },
   methods: {
     joinChannel() {
+      AgoraRTC.getDevices(
+        function (devices) {
+          let videoinput = devices.find((item) => {
+            return item.kind == "videoinput";
+          });
+          let audioinput = devices.find((item) => {
+            return item.kind == "audioinput";
+          });
+          if (!audioinput) {
+            alert.error("未检测到麦克风！");
+          }
+          if (!videoinput) {
+            alert.error("未检测到摄像头！");
+          }
+        },
+        function (errStr) {
+          console.error("Failed to getDevice", errStr);
+        }
+      );
+
       if (this.rtc && this.rtc.localStream) {
         this.rtc.localStream.close();
       }
@@ -105,16 +130,16 @@ export default {
           this.rtc
             .leaveChannel()
             .then(() => {
-              console.info('Leave Success')
+              console.info("Leave Success");
             })
             .catch((err) => {
               // this.$message.error("Leave Failure");
               log("leave error", err);
             });
           this.rtc.localStream.close();
-          this.rtc.localStream = null
-          this.localStream = null
-          this.streams = []
+          this.rtc.localStream = null;
+          this.localStream = null;
+          this.streams = [];
         } catch (e) {}
       }
     },

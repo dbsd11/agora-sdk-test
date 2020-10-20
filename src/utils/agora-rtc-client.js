@@ -68,6 +68,7 @@ export default class RTCClient {
       }, (err) => {
         reject(err)
         console.error("init local stream failed ", err)
+        alert('init stream failed', err)
       })
     })
   }
