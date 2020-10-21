@@ -80,6 +80,7 @@ export default {
       AgoraRTMObj: null,
       testChannelAttribute01: [],
       channelPeopleCount: 0,
+      AgoraRTMObjChannel: null,
     };
   },
   computed: {
@@ -142,23 +143,28 @@ export default {
               });
           }, 2000);
 
-          let channel = this.AgoraRTMObj.createChannel(channelId);
-          channel
-            .join()
+          this.AgoraRTMObjChannel = this.AgoraRTMObj.createChannel(channelId);
+          this.AgoraRTMObjChannel.join()
             .then((res) => {
-              channel.on("MemberJoined", (memberId) => {
+              this.AgoraRTMObjChannel.on("MemberJoined", (memberId) => {
                 console.log("用户加入", memberId);
               });
-              channel.on("ChannelMessage", function (message, memberId) {
+              this.AgoraRTMObjChannel.on("ChannelMessage", function (
+                message,
+                memberId
+              ) {
                 console.log("用户消息", message, memberId);
               });
-              channel.on("MemberLeft", (memberId) => {
+              this.AgoraRTMObjChannel.on("MemberLeft", (memberId) => {
                 console.log("用户离开", memberId);
               });
-              channel.on("MemberCountUpdated", (memberCount) => {
-                this.channelPeopleCount = memberCount;
-              });
-              channel.on("AttributesUpdated", (evt) => {
+              this.AgoraRTMObjChannel.on(
+                "MemberCountUpdated",
+                (memberCount) => {
+                  this.channelPeopleCount = memberCount;
+                }
+              );
+              this.AgoraRTMObjChannel.on("AttributesUpdated", (evt) => {
                 console.log("AttributesUpdated", evt);
                 if (evt["testChannelAttribute01"]) {
                   this.testChannelAttribute01 = JSON.parse(
@@ -205,7 +211,13 @@ export default {
         });
     },
     leaveChannel() {
-      this.AgoraRTMObj.logout();
+      if (this.AgoraRTMObjChannel) {
+        this.AgoraRTMObjChannel.leave().then(() => {
+          this.AgoraRTMObj.logout();
+          this.AgoraRTMObjChannel = null;
+          this.AgoraRTMObj = null;
+        });
+      }
     },
     sendMessage() {
       this.AgoraRTMObj.sendMessageToPeer(
