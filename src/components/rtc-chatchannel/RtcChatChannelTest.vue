@@ -33,9 +33,22 @@ export default {
     };
   },
   created() {
-    if (AgoraRTC.checkSystemRequirements()) {
+    if (!AgoraRTC.checkSystemRequirements()) {
       alert("不兼容当前浏览器");
     }
+  },
+  mounted(){
+    this.$parent.option.channel = "testRTC01";
+    this.$axios
+      .get(
+        `http://47.98.145.82:8081/api/videocall/rtc?channelId=${this.$parent.option.channel}`
+      )
+      .then(({ data: data }) => {
+        if (data.data) {
+          this.$parent.option.appid = data.data.appId;
+          this.$parent.option.token = data.data.token;
+        }
+      });
   },
   methods: {
     joinChannel() {
