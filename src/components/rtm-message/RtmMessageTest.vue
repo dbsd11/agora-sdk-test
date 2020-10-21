@@ -93,7 +93,7 @@ export default {
     this.$parent.option.channel = "testRTM01";
     this.$axios
       .get(
-        `http://47.98.145.82:8081/api/videocall/rtm?userId=${this.option.from}&channelId=${this.$parent.option.channel}`
+        `https://chinaccelerator.t.gotin.online/api/videocall/rtm?userId=${this.option.from}&channelId=${this.$parent.option.channel}`
       )
       .then(({ data: data }) => {
         if (data.data) {
