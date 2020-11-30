@@ -205,6 +205,11 @@ export default {
               );
             });
           });
+          this.AgoraRTMObj.subscribePeersOnlineStatus(['081806a5-0184-446e-9fba-6014873bbbe9'])
+          this.AgoraRTMObj.on('PeersOnlineStatusChanged', (evt)=>{
+            console.info('PeersOnlineStatusChanged', evt)
+          })
+
         })
         .catch((err) => {
           console.log(err);

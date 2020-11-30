@@ -3,7 +3,7 @@
     <div>
       <h1>{{ msg }}</h1>
       <h2>测试 Links</h2>
-      <ul>
+      <ul data-growing-container>
         <li
           @click="
             rtcChatChannelTest = true;
