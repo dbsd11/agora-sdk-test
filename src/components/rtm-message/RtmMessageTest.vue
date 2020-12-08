@@ -102,6 +102,16 @@ export default {
           this.$parent.option.token = data.data.token;
         }
       });
+
+      setInterval(()=>{
+        if(!window.testQueryOnlinePeerId || !this.AgoraRTMObj) {
+          return
+        }
+
+        this.AgoraRTMObj.queryPeersOnlineStatus([window.testQueryOnlinePeerId]).then((peersOnlineStatusResult)=>{
+            console.info(peersOnlineStatusResult)
+        })
+      }, 1000)
   },
   methods: {
     uuid() {
@@ -205,7 +215,7 @@ export default {
               );
             });
           });
-          this.AgoraRTMObj.subscribePeersOnlineStatus(['081806a5-0184-446e-9fba-6014873bbbe9'])
+          this.AgoraRTMObj.subscribePeersOnlineStatus([this.option.from])
           this.AgoraRTMObj.on('PeersOnlineStatusChanged', (evt)=>{
             console.info('PeersOnlineStatusChanged', evt)
           })
