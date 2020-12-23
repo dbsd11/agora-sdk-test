@@ -8,6 +8,7 @@
           @click="
             rtcChatChannelTest = true;
             rtmMessageTest = false;
+            disjoinSetTest = false;
           "
         >
           <a href="#">rtc聊天channel测试</a>
@@ -16,9 +17,19 @@
           @click="
             rtcChatChannelTest = false;
             rtmMessageTest = true;
+            disjoinSetTest = false;
           "
         >
           <a href="#">rtm实时message测试</a>
+        </li>
+        <li
+          @click="
+            rtcChatChannelTest = false;
+            rtmMessageTest = false;
+            disjoinSetTest = true;
+          "
+        >
+          <a href="#">并查集算法测试</a>
         </li>
       </ul>
     </div>
@@ -71,7 +82,7 @@
       </button>
     </div>
 
-    <div class="container">
+    <div class="container" v-if="rtcChatChannelTest || rtmMessageTest">
       <form id="join-form">
         <div class="row join-info-group">
           <div class="col-sm">
@@ -151,29 +162,99 @@
         <RtmMessageTest v-if="rtmMessageTest" />
       </div>
     </div>
+
+    <div v-if="disjoinSetTest" style="display: inline-flex">
+        <DisjoinSetTest :chartData='disjoinSetChartData' :setName='disjoinSetName+" (转换前)"' :needDisjoinSet='false'/>
+        <p style="width:0px;font-weight:bold;writing-mode:vertical-rl;-webkit-text-combine:horizontal">=></p>
+        <p style="width:10px;font-weight:bold;writing-mode:vertical-rl">转换后</p>
+        <DisjoinSetTest :chartData='disjoinSetChartData' :setName='disjoinSetName' :needDisjoinSet='true'/>
+    </div>
   </div>
 </template>
 
 <script>
 import RtcChatChannelTest from "@/components/rtc-chatchannel/RtcChatChannelTest.vue";
 import RtmMessageTest from "@/components/rtm-message/RtmMessageTest.vue";
+import DisjoinSetTest from "@/components/demo-algorithm/DisjoinSetTest.vue";
 export default {
   name: "HelloWorld",
   components: {
     RtcChatChannelTest,
     RtmMessageTest,
+    DisjoinSetTest,
   },
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
       rtcChatChannelTest: true,
       rtmMessageTest: false,
+      disjoinSetTest: false,
       option: {
         appid: "",
         token: "",
         uid: 0,
         channel: "",
       },
+      disjoinSetChartData :{
+        pointList: [
+        {
+          id: "xxa",
+          name: "A"
+        },{
+          id: "xxc",
+          name: "C"
+        },
+        {
+          id: "xxb",
+          name: "B",
+          value: 1000
+        },
+        {
+          id: "xxd",
+          name: "D"
+        },{
+          id: "xxe",
+          name: "E"
+        },{
+          id: "xxf",
+          name: "f"
+        },{
+          id: "xxg",
+          name: "g"
+        }],
+        edgeList: [
+        {
+          "from": "xxa",
+          "to": "xxb",
+          "weight": 10
+        },{
+          "from": "xxc",
+          "to": "xxb",
+          "weight": 7
+        },
+        {
+          "from": "xxe",
+          "to": "xxd",
+          "weight": 3
+        },
+        {
+          "from": "xxb",
+          "to": "xxd",
+          "weight": 3
+        },
+        {
+          "from": "xxd",
+          "to": "xxf",
+          "weight": 3
+        },
+        {
+          "from": "xxf",
+          "to": "xxg",
+          "weight": 3
+        }
+        ]
+      },
+      disjoinSetName: '测试关系网络'
     };
   },
   methods: {
