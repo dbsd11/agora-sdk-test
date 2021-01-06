@@ -163,11 +163,24 @@
       </div>
     </div>
 
-    <div v-if="disjoinSetTest" style="display: inline-flex">
-        <DisjoinSetTest :chartData='disjoinSetChartData' :setName='disjoinSetName+" (转换前)"' :needDisjoinSet='false'/>
-        <p style="width:0px;font-weight:bold;writing-mode:vertical-rl;-webkit-text-combine:horizontal">=></p>
-        <p style="width:10px;font-weight:bold;writing-mode:vertical-rl">转换后</p>
-        <DisjoinSetTest :chartData='disjoinSetChartData' :setName='disjoinSetName' :needDisjoinSet='true'/>
+    <div v-if="disjoinSetTest">
+        <div style="width:80%;display:inline-grid">
+          <p style="font-weight:bold;font-size:xlarge">算法效果</p>
+          <input type="text" placeholder="网络名" required v-model="disjoinSetName" style="width:200px"/>
+          <textarea rows="5" cols="5" required v-model="disjoinSetChartDataText" v-if='disjoinSetName'></textarea>
+        </div>
+        
+        <div style="display: inline-flex" v-if='disjoinSetName'>
+          <DisjoinSetTest :key='disjoinSetName' :chartDataText='disjoinSetChartDataText' :setName='disjoinSetName+" (转换前)"' :needDisjoinSet='false'/>
+          <p style="width:0px;font-weight:bold;writing-mode:vertical-rl;-webkit-text-combine:horizontal">=></p>
+          <p style="width:10px;font-weight:bold;writing-mode:vertical-rl">转换后</p>
+          <DisjoinSetTest :key='disjoinSetName+"1"' :chartDataText='disjoinSetChartDataText' :setName='disjoinSetName' :needDisjoinSet='true'/>
+        </div>
+
+        <div style="width:80%;margin-top:50px;display:inline-grid">
+           <p style="font-weight:bold;font-size:xlarge">demo</p>
+           <ShareBuyItemDemo/>
+        </div>
     </div>
   </div>
 </template>
@@ -176,12 +189,14 @@
 import RtcChatChannelTest from "@/components/rtc-chatchannel/RtcChatChannelTest.vue";
 import RtmMessageTest from "@/components/rtm-message/RtmMessageTest.vue";
 import DisjoinSetTest from "@/components/demo-algorithm/DisjoinSetTest.vue";
+import ShareBuyItemDemo from "@/components/demo-algorithm/ShareBuyItemDemo.vue"
 export default {
   name: "HelloWorld",
   components: {
     RtcChatChannelTest,
     RtmMessageTest,
     DisjoinSetTest,
+    ShareBuyItemDemo,
   },
   data() {
     return {
@@ -198,29 +213,29 @@ export default {
       disjoinSetChartData :{
         pointList: [
         {
-          id: "xxa",
-          name: "A"
+         "id": "xxa",
+         "name": "A"
         },{
-          id: "xxc",
-          name: "C"
+         "id": "xxc",
+         "name": "C"
         },
         {
-          id: "xxb",
-          name: "B",
-          value: 1000
+         "id": "xxb",
+         "name": "B",
+         "value": 1000
         },
         {
-          id: "xxd",
-          name: "D"
+         "id": "xxd",
+         "name": "D"
         },{
-          id: "xxe",
-          name: "E"
+         "id": "xxe",
+         "name": "E"
         },{
-          id: "xxf",
-          name: "f"
+         "id": "xxf",
+         "name": "f"
         },{
-          id: "xxg",
-          name: "g"
+         "id": "xxg",
+         "name": "g"
         }],
         edgeList: [
         {
@@ -254,7 +269,8 @@ export default {
         }
         ]
       },
-      disjoinSetName: '测试关系网络'
+      disjoinSetName: '',
+      disjoinSetChartDataText: '{"pointList":[], "edgeList":[]}',
     };
   },
   methods: {

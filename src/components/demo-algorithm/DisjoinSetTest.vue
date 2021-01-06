@@ -16,11 +16,15 @@ export default {
       links: [],
       categories: [],
       color: ["#b8d9ff", "#0198e5", "#ff6c66"],
+      disjointSet: null
     };
   },
   props: {
     chartData: {
       type: Object,
+    },
+    chartDataText: {
+      type: String
     },
     setName: {
       type: String,
@@ -75,9 +79,14 @@ export default {
     },
     initDisjoinSetData() {
       this.title = this.setName;
-      var pointList = this.chartData["pointList"]
-      var edgeList = this.chartData["edgeList"]
 
+      var chartData = this.chartData?this.chartData:JSON.parse(this.chartDataText)
+      var pointList = chartData["pointList"]
+      var edgeList = chartData["edgeList"]
+
+      if(!pointList || (pointList.length == 0)){
+        return
+      }
 
       var maxValuePoint = pointList.reduce((point1, point2)=>(point1['value']||0)>(point2['value']||0)?point1:point2)
 
@@ -107,9 +116,7 @@ export default {
           this.nodes = nodes;
           this.links = links;
           this.categories = categories;
-
-          disjointSet.clear();
-          disjointSet = null;
+          this.disjointSet = disjointSet;
       }else{
           var pointsMap = {}
           pointList.forEach((point)=> pointsMap[point.id]=point)
@@ -132,7 +139,7 @@ export default {
       }
     },
     initData() {
-      if(!this.setName || !this.chartData){
+      if(!this.setName){
         this.initDemoData();
       }else {
         this.initDisjoinSetData();
